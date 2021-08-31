@@ -6,10 +6,18 @@ MAINTAINER KBase Developer
 # install line here, a git checkout to download code, or run any other
 # installation scripts.
 
-# RUN apt-get update
+RUN apt-get update && apt-get install -y wget git build-essential make zlib1g-dev
 
+RUN conda install -c bioconda deblur
 
-# -----------------------------------------
+# RUN conda update --all
+
+RUN conda install -c conda-forge r-base
+
+COPY ./dada2_installation_scripts.R /kb/module/dada2_installation_scripts.R
+RUN chmod -R a+rw /kb/module
+
+RUN Rscript --vanilla /kb/module/dada2_installation_scripts.R
 
 COPY ./ /kb/module
 RUN mkdir -p /kb/module/work
@@ -22,3 +30,6 @@ RUN make all
 ENTRYPOINT [ "./scripts/entrypoint.sh" ]
 
 CMD [ ]
+
+
+# -----------------------------------------
