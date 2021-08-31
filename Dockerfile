@@ -8,9 +8,12 @@ MAINTAINER KBase Developer
 
 RUN apt-get update && apt-get install -y wget git build-essential make zlib1g-dev
 
-RUN conda install -c bioconda deblur
+RUN conda update --all
 
-# RUN conda update --all
+RUN conda create -n deblurenv python=3.5 numpy
+
+RUN /bin/bash -c "source activate deblurenv \
+    && conda install -c bioconda -c biocore "VSEARCH=2.7.0" MAFFT=7.310 SortMeRNA=2.0 biom-format deblur"
 
 RUN conda install -c conda-forge r-base
 
